@@ -53,7 +53,7 @@ BOOKS = [
         Book(6, 'HP3', 'Author3', 'Book description', 1, 2005)
 ]
 
-
+ 
 @app.get('/books', status_code=status.HTTP_200_OK)
 async def read_all_books():
     return BOOKS
