@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends, Path
 from sqlalchemy.orm import Session
 from starlette import status
 from starlette.exceptions import HTTPException
-from models import Todos, Users
-from database import SessionLocal
+from ..models import Todos, Users
+from ..database import SessionLocal
 from .auth import get_current_user
 
 
@@ -40,7 +40,7 @@ async def read_all_users(user: user_dependency, db: db_dependency):
     return db.query(Users).all()
 
 
-@router.delete('/delete_user/{user_id}', status_code=status.HTTP_200_OK)
+@router.delete('/delete_user/{user_id}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(user: user_dependency, db: db_dependency, user_id: Annotated[int, Path(ge=1)]):
     if user is None or user.get('user_role') != 'admin':
         raise HTTPException(status_code=401, detail='Authentication failed')
@@ -52,7 +52,7 @@ async def delete_user(user: user_dependency, db: db_dependency, user_id: Annotat
     db.commit()
 
 
-@router.delete('/delete_todo/{todo_id}', status_code=status.HTTP_200_OK)
+@router.delete('/delete_todo/{todo_id}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_todo(user: user_dependency, db: db_dependency, todo_id: Annotated[int, Path(ge=1)]):
     if user is None or user.get('user_role') != 'admin':
         raise HTTPException(status_code=401, detail='Authentication failed')
