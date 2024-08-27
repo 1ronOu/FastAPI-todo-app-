@@ -180,3 +180,10 @@ async def register_user(request: Request, email: str = Form(...), username: str 
 
     msg = 'User successfully created'
     return templates.TemplateResponse('login.html', {'request': request, 'msg': msg})
+
+
+@router.get('/read_all_users')
+def read_all_users(db: Session = Depends(get_db)):
+    users_model = db.query(models.Users).all()
+    return users_model
+
